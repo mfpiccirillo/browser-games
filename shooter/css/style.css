@@ -1,20 +1,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
+html {
   background: #000;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
   overflow: hidden;
 }
 
 body {
+  background: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   font-family: monospace;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
 }
 
 #gameCanvas {
@@ -24,6 +25,6 @@ body {
   cursor: crosshair;
   border: 2px solid #222;
   width: min(640px, 100vw, calc(100vh * 4 / 3));
-  height: auto;
+  aspect-ratio: 4 / 3;
   touch-action: none;
 }
