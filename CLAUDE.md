@@ -22,13 +22,21 @@ node --check shooter/js/*.js
 
 ## Git workflow
 
-This repo pushes to `https://github.com/mfpiccirillo/browser-games`. After every change: commit with a descriptive message and push. Always commit before and after significant changes so the user can revert.
+**Commit and push after every meaningful unit of work** — a feature added, a bug fixed, a file created. Never let multiple unrelated changes accumulate in one commit. The goal is a clean history the user can revert to at any point.
 
 ```bash
 git add <files>
-git commit -m "short description of what and why"
+git commit -m "verb: short description of what changed and why"
 git push
 ```
+
+Rules:
+- Commit before starting a significant change (clean checkpoint) and again when it's done (working checkpoint).
+- One logical change per commit — don't bundle unrelated edits.
+- Push immediately after every commit. Local-only commits defeat the purpose.
+- Commit messages use an imperative verb: `add`, `fix`, `update`, `remove`, `refactor`.
+
+Remote: `https://github.com/mfpiccirillo/browser-games` (branch `main`).
 
 ## Shooter architecture
 
