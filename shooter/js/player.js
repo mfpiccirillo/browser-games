@@ -96,6 +96,7 @@ export class Player {
     if (input.keys['w'] || input.keys['arrowup'])    dy -= 1;
     if (input.keys['s'] || input.keys['arrowdown'])  dy += 1;
     if (dx !== 0 && dy !== 0) { dx *= 0.707; dy *= 0.707; }
+    if (input.joystick.active) { dx = input.joystick.dx; dy = input.joystick.dy; }
     this.x += dx * this.speed * delta;
     this.y += dy * this.speed * delta;
     this.isMoving = dx !== 0 || dy !== 0;

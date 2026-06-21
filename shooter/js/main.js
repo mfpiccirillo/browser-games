@@ -5,7 +5,7 @@ import { Player } from './player.js';
 import { BulletManager } from './bullet.js';
 import { ParticleSystem } from './particle.js';
 import { LevelManager, LEVELS } from './level.js';
-import { drawHUD } from './hud.js';
+import { drawHUD, drawTouchControls } from './hud.js';
 import {
   PowerupManager, setPowerupContext,
   addPickupNotification, updateNotifications, drawNotifications
@@ -123,6 +123,7 @@ function render() {
       player.draw();
       particleSystem.draw();
       drawHUD(player, score, currentLevelIndex + 1, LEVELS.length);
+      drawTouchControls(InputState.joystick);
       drawNotifications(CANVAS_WIDTH);
       drawWaveBanner(levelManager.currentWaveIndex + 1, waveBannerTimer);
       break;

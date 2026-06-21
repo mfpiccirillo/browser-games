@@ -116,6 +116,16 @@ export function drawRectCanvas(x, y, w, h, color) {
   ctx.fillRect(x, y, w, h);
 }
 
+export function drawCircleCanvas(cx, cy, r, color, alpha = 1) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 export function strokeRectCanvas(x, y, w, h, color, lineWidth = 1) {
   ctx.strokeStyle = color;
   ctx.lineWidth = lineWidth;

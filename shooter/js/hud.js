@@ -1,8 +1,8 @@
 import {
-  CANVAS_WIDTH,
+  CANVAS_WIDTH, SCALE,
   COLOR_WHITE, COLOR_GREEN, COLOR_ORANGE, COLOR_RED
 } from './constants.js';
-import { drawRectCanvas, strokeRectCanvas, drawText } from './renderer.js';
+import { drawRectCanvas, strokeRectCanvas, drawText, drawCircleCanvas } from './renderer.js';
 
 const EFFECT_COLORS = {
   speed:       '#4ae8e8',
@@ -56,4 +56,14 @@ export function drawHUD(player, score, levelNumber, totalLevels) {
 
   // ── Controls reminder (bottom-right, small) ───────────────────
   drawText('ARROWS: MOVE  MOUSE: AIM  SPACE: SHOOT', CANVAS_WIDTH - 10, 468, 8, '#444444', 'right');
+}
+
+export function drawTouchControls(joystick) {
+  if (!joystick.active) return;
+  const bx = joystick.baseX * SCALE;
+  const by = joystick.baseY * SCALE;
+  const kx = joystick.knobX * SCALE;
+  const ky = joystick.knobY * SCALE;
+  drawCircleCanvas(bx, by, 20 * SCALE, COLOR_WHITE, 0.12); // base area
+  drawCircleCanvas(kx, ky,  6 * SCALE, COLOR_WHITE, 0.65); // knob
 }

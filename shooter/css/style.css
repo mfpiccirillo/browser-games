@@ -17,4 +17,7 @@ body {
   image-rendering: crisp-edges;
   cursor: crosshair;
   border: 2px solid #222;
+  width: min(640px, 100vw, calc(100vh * 4 / 3));
+  height: auto;
+  touch-action: none;
 }
