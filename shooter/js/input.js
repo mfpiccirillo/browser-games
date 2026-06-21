@@ -18,6 +18,7 @@ const JOYSTICK_RADIUS = 20; // logical units
 
 function toLogical(canvas, clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) return { x: LOGICAL_WIDTH / 2, y: LOGICAL_HEIGHT / 2 };
   return {
     x: (clientX - rect.left) / (rect.width  / LOGICAL_WIDTH),
     y: (clientY - rect.top)  / (rect.height / LOGICAL_HEIGHT),
@@ -60,16 +61,20 @@ export function initInput(canvas) {
 
   canvas.addEventListener('touchstart', e => {
     e.preventDefault();
-    for (const touch of e.changedTouches) {
+    const touches = e.changedTouches;
+    for (let i = 0; i < touches.length; i++) {
+      const touch = touches[i];
       const pos = toLogical(canvas, touch.clientX, touch.clientY);
       InputState.mouseClicked = true; // any touch advances menu/UI screens
       if (pos.x < LOGICAL_WIDTH / 2 && leftTouchId === null) {
         leftTouchId = touch.identifier;
-        Object.assign(InputState.joystick, {
-          active: true, dx: 0, dy: 0,
-          baseX: pos.x, baseY: pos.y,
-          knobX: pos.x, knobY: pos.y,
-        });
+        InputState.joystick.active = true;
+        InputState.joystick.dx     = 0;
+        InputState.joystick.dy     = 0;
+        InputState.joystick.baseX  = pos.x;
+        InputState.joystick.baseY  = pos.y;
+        InputState.joystick.knobX  = pos.x;
+        InputState.joystick.knobY  = pos.y;
       } else if (pos.x >= LOGICAL_WIDTH / 2 && rightTouchId === null) {
         rightTouchId = touch.identifier;
         InputState.mouseX    = pos.x;
@@ -81,12 +86,14 @@ export function initInput(canvas) {
 
   canvas.addEventListener('touchmove', e => {
     e.preventDefault();
-    for (const touch of e.changedTouches) {
+    const touches = e.changedTouches;
+    for (let i = 0; i < touches.length; i++) {
+      const touch = touches[i];
       const pos = toLogical(canvas, touch.clientX, touch.clientY);
       if (touch.identifier === leftTouchId) {
-        const rawDx = pos.x - InputState.joystick.baseX;
-        const rawDy = pos.y - InputState.joystick.baseY;
-        const dist  = Math.hypot(rawDx, rawDy);
+        const rawDx   = pos.x - InputState.joystick.baseX;
+        const rawDy   = pos.y - InputState.joystick.baseY;
+        const dist    = Math.hypot(rawDx, rawDy);
         const clamped = Math.min(dist, JOYSTICK_RADIUS);
         const angle   = Math.atan2(rawDy, rawDx);
         InputState.joystick.knobX = InputState.joystick.baseX + Math.cos(angle) * clamped;
@@ -102,10 +109,14 @@ export function initInput(canvas) {
 
   function handleTouchEnd(e) {
     e.preventDefault();
-    for (const touch of e.changedTouches) {
+    const touches = e.changedTouches;
+    for (let i = 0; i < touches.length; i++) {
+      const touch = touches[i];
       if (touch.identifier === leftTouchId) {
         leftTouchId = null;
-        Object.assign(InputState.joystick, { active: false, dx: 0, dy: 0 });
+        InputState.joystick.active = false;
+        InputState.joystick.dx     = 0;
+        InputState.joystick.dy     = 0;
       } else if (touch.identifier === rightTouchId) {
         rightTouchId = null;
         delete InputState.keys[' '];
@@ -113,7 +124,7 @@ export function initInput(canvas) {
     }
   }
 
-  canvas.addEventListener('touchend',   handleTouchEnd, { passive: false });
+  canvas.addEventListener('touchend',    handleTouchEnd, { passive: false });
   canvas.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 }
 
